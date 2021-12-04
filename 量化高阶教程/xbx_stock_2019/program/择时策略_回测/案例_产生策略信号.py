@@ -12,9 +12,10 @@ pd.set_option('display.max_rows', 5000)  # 最多显示数据的行数
 
 
 # =====读入股票数据
-stock_code = 'sz000002'
-df = pd.read_csv('C:/Users/sgwat/Desktop/quant_class/量化高阶教程/xbx_stock_2019/data/择时策略-回测/%s.csv' % stock_code,
+stock_code = 'sh600519'
+df = pd.read_csv(r'C:\Users\sgwat\Desktop\quant_class\量化初阶教程\data\历史股票数据库\stock\{}.csv'.format(stock_code),
                  encoding='gbk', skiprows=1, parse_dates=['交易日期'])
+
 # 任何原始数据读入都进行一下排序、去重，以防万一
 df.sort_values(by=['交易日期'], inplace=True)
 df.drop_duplicates(subset=['交易日期'], inplace=True)
@@ -38,7 +39,6 @@ df['跌停价'] = df['前收盘价'] * 0.9
 # print(round(3.5), round(4.5))  # 银行家舍入法：四舍六进，五，奇进偶不进
 df['涨停价'] = df['涨停价'].apply(lambda x: float(Decimal(x*100).quantize(Decimal('1'), rounding=ROUND_HALF_UP) / 100))
 df['跌停价'] = df['跌停价'].apply(lambda x: float(Decimal(x*100).quantize(Decimal('1'), rounding=ROUND_HALF_UP) / 100))
-
 
 # =====计算移动平均线策略的交易信号
 
@@ -64,6 +64,6 @@ df.loc[condition1 & condition2, 'signal'] = 0  # 将产生平仓信号当天的s
 # ===删除无关中间变量
 df.drop(['ma_short', 'ma_long'], axis=1, inplace=True)
 print(df)
-exit()
 # =====将数据存入hdf文件中
-df.to_hdf(r'C:\Users\sgwat\Desktop\quant_class\LEO_DIY\data\signals.h5', key='df', mode='w')
+df.to_hdf(r'C:\Users\sgwat\Desktop\quant_class\LEO_DIY\data\maotai_signals.h5', key='df', mode='w')
+

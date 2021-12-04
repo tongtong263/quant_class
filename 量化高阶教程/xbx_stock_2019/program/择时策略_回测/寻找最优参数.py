@@ -5,17 +5,17 @@ author：邢不行
 
 通过循环，寻找择时策略的最优参数
 """
-from program.择时策略_回测.Functions import cal_fuquan_price, cal_zhangting_price
-from program.择时策略_回测.Signals import simple_moving_average_signal, simple_moving_average_para_list
-from program.择时策略_回测.Position import position_at_close
-from program.择时策略_回测.Evaluate import equity_curve_with_long_at_close
+from 量化高阶教程.xbx_stock_2019.program.择时策略_回测.Functions import cal_fuquan_price, cal_zhangting_price
+from 量化高阶教程.xbx_stock_2019.program.择时策略_回测.Signals import simple_moving_average_signal, simple_moving_average_para_list
+from 量化高阶教程.xbx_stock_2019.program.择时策略_回测.Position import position_at_close
+from 量化高阶教程.xbx_stock_2019.program.择时策略_回测.Evaluate import equity_curve_with_long_at_close
 import pandas as pd
 pd.set_option('expand_frame_repr', False)  # 当列太多时不换行
 pd.set_option('display.max_rows', 5000)  # 最多显示数据的行数
 
 # 读入股票数据
-stock_code = 'sz000002'
-df = pd.read_csv('/Users/xingbuxingx/Desktop/股票量化课程/xbx_stock_2019/data/择时策略-回测/%s.csv' % stock_code,
+stock_code = 'sh600276'
+df = pd.read_csv(r'C:\Users\sgwat\Desktop\quant_class\量化初阶教程\data\历史股票数据库\stock\{}.csv'.format(stock_code),
                  encoding='gbk', skiprows=1, parse_dates=['交易日期'])
 df.sort_values(by=['交易日期'], inplace=True)
 df.drop_duplicates(subset=['交易日期'], inplace=True)

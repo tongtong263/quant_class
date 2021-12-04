@@ -9,8 +9,8 @@ author：邢不行
 如果针对单个股票，根据策略进行实盘交易
 """
 import easytrader
-from program.择时策略_实盘.Trade_Function import *
-from program.择时策略_实盘.Trade_Signal import *
+from 量化高阶教程.xbx_stock_2019.program.择时策略_实盘.Trade_Function import *
+from 量化高阶教程.xbx_stock_2019.program.择时策略_实盘.Trade_Signal import *
 
 from 量化高阶教程.xbx_stock_2019.program.择时策略_实盘.Trade_Function import get_today_limit_from_eastmoney
 

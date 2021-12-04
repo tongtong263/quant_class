@@ -65,10 +65,12 @@ df.loc[df['pos'] == 0, ['cash']] = None  #卖出时，现金为none
 
 # 股票净值随着涨跌幅波动
 group_num = len(df.groupby('start_time'))
+
 if group_num > 1:
     t = df.groupby('start_time').apply(lambda x: x['收盘价_复权'] / x.iloc[0]['收盘价_复权'] * x.iloc[0]['stock_value'])
     t = t.reset_index(level=[0])
     df['stock_value'] = t['收盘价_复权']
+
 elif group_num == 1:
     t = df.groupby('start_time')[['收盘价_复权', 'stock_value']].apply(lambda x: x['收盘价_复权'] / x.iloc[0]['收盘价_复权'] * x.iloc[0]['stock_value'])
     df['stock_value'] = t.T.iloc[:, 0]
@@ -92,7 +94,9 @@ df.loc[open_pos_condition, 'equity_change'] = df.loc[open_pos_condition, 'net_va
 df['equity_change'].fillna(value=0, inplace=True)
 df['equity_curve'] = (1 + df['equity_change']).cumprod()
 
-# ===删除无关数据
-df.drop(['start_time', 'stock_num', 'cash', 'stock_value', 'net_value'], axis=1, inplace=True)
+df['equity_curve_base'] = (df['收盘价'] / df['前收盘价']).cumprod()
 
-print(df)
+# ===删除无关数据
+# df.drop(['start_time', 'stock_num', 'cash', 'stock_value', 'net_value'], axis=1, inplace=True)
+
+print(df[['股票代码', '股票名称', '交易日期', '最高价', '最低价', '开盘价', '收盘价', '前收盘价', 'pos', 'equity_curve', 'equity_curve_base']])

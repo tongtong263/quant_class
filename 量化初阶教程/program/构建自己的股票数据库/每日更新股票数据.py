@@ -242,7 +242,7 @@ for i in df.index:
 
 
     # 构建存储文件路径
-    path = 'C:/Users/sgwat/Desktop/quant_class/量化初阶教程/data/历史股票数据库/stock/' \
+    path = 'C:/Users/sgwat/Desktop/quant_class/LEO_DIY/data/All_Stocks/' \
            + stock_code + '.csv'
 
 

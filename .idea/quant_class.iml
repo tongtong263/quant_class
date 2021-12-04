@@ -4,8 +4,9 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/量化初阶教程/data" />
       <excludeFolder url="file://$MODULE_DIR$/量化高阶教程/xbx_stock_2019/data" />
+      <excludeFolder url="file://$MODULE_DIR$/LEO_DIY/data" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (base)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (auto_trade)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

@@ -6,6 +6,7 @@ author：邢不行
 存放选股策略中需要用到的一些函数
 """
 import pandas as pd  # 导入pandas，我们一般为pandas取一个别名叫做pd
+import numpy as np
 from decimal import Decimal, ROUND_HALF_UP
 import os
 
@@ -82,6 +83,8 @@ def merge_with_index_data(df, index_data):
     # ===去除上市之前的数据
     df = df[df['股票代码'].notnull()]
 
+
+
     # ===判断计算当天是否交易
     df['是否交易'] = 1
     df.loc[df['_merge'] == 'right_only', '是否交易'] = 0
@@ -120,6 +123,8 @@ def transfer_to_period_data(df, period_type='m'):
 
             # 因子列
             '总市值': 'last',
+            '振幅1': 'last',
+            '振幅2': 'last',
         }
     )
 
@@ -130,8 +135,12 @@ def transfer_to_period_data(df, period_type='m'):
 
     # 计算其他因子
 
+    # 计算换手率
+    period_df['换手率'] = df['成交额'].resample(period_type).sum() / df['流通市值'].resample(period_type).last()
+
     # 计算周期资金曲线
     period_df['每天涨跌幅'] = df['涨跌幅'].resample(period_type).apply(lambda x: list(x))
+    period_df['本周期资金曲线'] = period_df['每天涨跌幅'].apply(lambda x: np.cumprod(np.array(x) + 1))
 
 
     # 重新设定index

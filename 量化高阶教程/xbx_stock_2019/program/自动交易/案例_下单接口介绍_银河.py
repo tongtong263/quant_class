@@ -15,8 +15,8 @@ user = easytrader.use('yh_client')  # 选择银河客户端
 
 # 输入用户名和密码，以及程序的路径
 user.prepare(
-    user='', password='',
-    exe_path='C:\\双子星金融终端-中国银河证券\\xiadan.exe'
+    user='210400068365', password='558626',
+    exe_path='C:\\双子星-中国银河证券\\xiadan.exe'
 )
 
 # =====获取账户资金状况
@@ -53,6 +53,9 @@ order_info = user.sell('000005', 0.55, 100)
 # ===市价单，不需要填价格
 order_info = user.market_buy('600823', 100)
 order_info = user.market_sell('600823', 100)
+
+
+
 
 # =====撤单
 order_num = '150576'

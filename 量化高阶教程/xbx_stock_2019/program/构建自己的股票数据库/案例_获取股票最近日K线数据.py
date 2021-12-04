@@ -45,17 +45,19 @@ url = url % (k_type, stock_code, k_type, num, _random())
 content = urlopen(url).read().decode()  # 使用python自带的库，从网络上获取信息
 
 # ===将数据转换成dict格式
-content = content.split('=', maxsplit=1)[-1]
+content = content.split('=', maxsplit=1)[-1]  #以“=” split，只split一次，并且取=后面的值
 content = json.loads(content)  # 自己去仔细看下这里面有什么数据
 
 # ===将数据转换成DataFrame格式
 k_data = content['data'][stock_code]
+
 if k_type in k_data:
     k_data = k_data[k_type]
 elif 'qfq' + k_type in k_data:  # qfq是前复权的缩写
     k_data = k_data['qfq' + k_type]
 else:
     raise ValueError('已知的key在dict中均不存在，请检查数据')
+
 df = pd.DataFrame(k_data)
 
 
@@ -64,10 +66,12 @@ rename_dict = {0: 'candle_end_time', 1: 'open', 2: 'close', 3: 'high', 4: 'low',
 # 其中amount单位是手，说明数据不够精确
 df.rename(columns=rename_dict, inplace=True)
 df['candle_end_time'] = pd.to_datetime(df['candle_end_time'])
+
 if 'info' not in df:
     df['info'] = None
+
 df = df[['candle_end_time', 'open', 'high', 'low', 'close', 'amount', 'info']]
-print(df)
+
 df.to_csv('sh000001.csv', index=False)
 # ===考察其他周期、指数、ETF
 

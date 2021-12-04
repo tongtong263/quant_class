@@ -8,19 +8,19 @@ author：邢不行
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from 量化高阶教程.xbx_stock_2019.program.选股策略.Functions import *
+from LEO_DIY.大作业2.Functions import *
 pd.set_option('expand_frame_repr', False)  # 当列太多时不换行
 pd.set_option('display.max_rows', 5000)  # 最多显示数据的行数
 
 # ===参数设定
-select_stock_num = 3  # 选股数量
+select_stock_num = 15  # 选股数量
 c_rate = 1.5 / 10000  # 手续费
 t_rate = 1 / 1000  # 印花税
 
 
 # ===导入数据
 # 从hdf文件中读取整理好的所有股票数据
-df = pd.read_hdf(r'C:\Users\sgwat\Desktop\quant_class\LEO_DIY\data\all_stock_data_W.h5', 'df')
+df = pd.read_hdf(r'C:\Users\sgwat\Desktop\quant_class\LEO_DIY\data\homework2_W.h5', 'df')
 df.dropna(subset=['下周期每天涨跌幅'], inplace=True)
 
 
@@ -31,8 +31,22 @@ df = df[df['下日_开盘涨停'] == False]
 df = df[df['下日_是否ST'] == False]
 df = df[df['下日_是否退市'] == False]
 
-# 计算选股因子，根据选股因子对股票进行排名
-df['排名'] = df.groupby('交易日期')['总市值'].rank()
+# 计算选股因子，反转策略：本周期跌幅最大的股票
+# df['本周期涨跌幅'] = df['本周期资金曲线'].apply(lambda x: x[-1] - 1)
+# df['排名'] = df.groupby('交易日期')['本周期涨跌幅'].rank()
+
+# # 计算选股因子，惯性策略：本周期涨幅最大的股票
+# df['本周期涨跌幅'] = df['本周期资金曲线'].apply(lambda x: x[-1] - 1)
+# df['排名'] = df.groupby('交易日期')['本周期涨跌幅'].rank(ascending=False)
+#
+# # # 计算选股因子，换手率：本周期的成交额 / 本周期最后一个交易日收盘时的流通市值
+# df['排名'] = df.groupby('交易日期')['换手率'].rank()
+#
+# # # 计算选股因子，振幅1
+# df['排名'] = df.groupby('交易日期')['振幅1'].rank()
+#
+# # # 计算选股因子，振幅2
+df['排名'] = df.groupby('交易日期')['振幅2'].rank()
 
 # 选取排名靠前的股票
 df = df[df['排名'] <= select_stock_num]
